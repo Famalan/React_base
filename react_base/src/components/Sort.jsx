@@ -3,13 +3,18 @@ import { useState } from 'react';
 function Sort({ value, onChangeSortType }) {
   const [open, setOpen] = useState(false);
   const list = [
-    { name: 'популярности', sortProperty: 'rating' },
-    { name: 'цене', sortProperty: 'price' },
-    { name: 'алфавиту', sortProperty: 'title' },
+    { name: 'популярности (DESC)', sortProperty: 'rating' },
+    { name: 'популярности (ASC)', sortProperty: '-rating' },
+    { name: 'цене (DESC)', sortProperty: 'price' },
+    { name: 'цене (ASC)', sortProperty: '-price' },
+    { name: 'алфавиту (DESC)', sortProperty: 'title' },
+    { name: 'алфавиту (ASC)', sortProperty: '-title' },
   ];
-  const sortName = list[value].name;
-  const onClickSortName = (index) => {
-    onChangeSortType(index);
+
+  const sortName = value.name;
+
+  const onClickSortName = (sortObj) => {
+    onChangeSortType(sortObj);
     setOpen(false);
   };
 
@@ -33,12 +38,12 @@ function Sort({ value, onChangeSortType }) {
       {open && (
         <div className="sort__popup">
           <ul>
-            {list.map((name, i) => (
+            {list.map((item, i) => (
               <li
                 key={i}
-                className={value === i ? 'active' : ''}
-                onClick={() => onClickSortName(i)}>
-                {name.name}
+                className={value.sortProperty === item.sortProperty ? 'active' : ''}
+                onClick={() => onClickSortName(item)}>
+                {item.name}
               </li>
             ))}
           </ul>

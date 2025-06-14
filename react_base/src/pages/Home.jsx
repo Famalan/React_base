@@ -9,15 +9,20 @@ function Home() {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
-  const [sortType, setSortType] = useState(0);
+  const [sortType, setSortType] = useState({
+    name: 'популярности (DESC)',
+    sortProperty: 'rating',
+  });
 
   useEffect(() => {
     setLoading(true);
 
-    const url =
-      categoryId === 0
-        ? 'https://6849a77c45f4c0f5ee726345.mockapi.io/api/v1/items'
-        : `https://6849a77c45f4c0f5ee726345.mockapi.io/api/v1/items?category=${categoryId}`;
+    const sortBy = sortType.sortProperty.replace('-', '');
+    const order = sortType.sortProperty.startsWith('-') ? 'asc' : 'desc';
+
+    const url = `https://6849a77c45f4c0f5ee726345.mockapi.io/api/v1/items?${
+      categoryId === 0 ? '' : `category=${categoryId}`
+    }&sortBy=${sortBy}&order=${order}`;
 
     axios
       .get(url)
